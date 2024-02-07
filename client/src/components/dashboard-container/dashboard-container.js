@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import DashboardItemComponents from "../dashboard-item/dashboard-item-components";
 import { useDrag, useDrop } from "react-dnd";
-import { ItemTypes } from "../../ItemTypes";
-
+import Col from "react-bootstrap/Col";
+import toast from "react-hot-toast";
 const DashboardContainer = ({ tasks, setTasks }) => {
   const [inProgress, setInProgress] = useState([]);
   const [closed, setClosed] = useState([]);
@@ -47,7 +46,6 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
     drop(item) {
       addItemToSection(item.id);
     },
-    // drop: (item) => addItemToSection(item.id),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
@@ -80,11 +78,15 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
         return t;
       });
 
+      localStorage.setItem("tasks", JSON.stringify(mTasks));
+
+      toast("Status à changé");
+
       return mTasks;
     });
   };
   return (
-    <div ref={drop} className={`${isOver ? "bg-white" : "bg-dark"}`}>
+    <div ref={drop} className={`${isOver ? "bg-primary" : "bg-dark"}`}>
       <Header text={text} bg={bg} count={todos?.length} />
       {tasksToMap &&
         tasksToMap.length > 0 &&
@@ -105,16 +107,22 @@ const Task = ({ task, tasks, setTasks }) => {
     }),
   }));
   return (
-    <div ref={drag} className={`${isDragging ? "bg-dark" : "bg-white"}`}>
+    <Col
+      ref={drag}
+      className={`column ${isDragging ? "bg-primary" : "bg-dark"}`}
+    >
       <p>{task.name}</p>
-    </div>
+    </Col>
   );
 };
 
 const Header = ({ text, bg, count }) => {
   return (
-    <div className=" d-flex">
-      {text} <div>{count}</div>
+    <div className=" d-flex header-dashboard">
+      <h6>
+        {text}
+        {/* <div>{count}</div> */}
+      </h6>
     </div>
   );
 };
