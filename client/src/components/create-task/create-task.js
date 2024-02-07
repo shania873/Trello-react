@@ -8,6 +8,8 @@ const CreateTask = ({ tasks, setTasks }) => {
     status: "todo",
   });
 
+  console.log(tasks);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (task.name.length < 3) return toast.error("Tu dois mettre un task !");

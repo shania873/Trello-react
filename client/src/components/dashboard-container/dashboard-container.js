@@ -70,11 +70,20 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
   }
 
   const addItemToSection = (id) => {
-    console.log("test");
-    console.log("droped", id, status);
+    setTasks((prev) => {
+      console.log("prev", prev);
+      const mTasks = prev.map((t) => {
+        console.log(t);
+        if (t.id === id) {
+          return { ...t, status: status };
+        }
+        return t;
+      });
+      return mTasks;
+    });
   };
   return (
-    <div ref={drop}>
+    <div ref={drop} className={`${isOver ? "bg-white" : "bg-dark"}`}>
       <Header text={text} bg={bg} count={todos?.length} />
       {tasksToMap &&
         tasksToMap.length > 0 &&
