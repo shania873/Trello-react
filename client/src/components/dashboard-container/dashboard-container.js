@@ -16,7 +16,7 @@ const DashboardContainer = ({ tasks, setTasks }) => {
     setTodos(fTodos);
     setInProgress(fInProgress);
     setClosed(fClosed);
-  }, [tasks.length]);
+  }, [tasks]);
 
   const statuses = ["todo", "inprogress", "closed"];
   return (
@@ -79,6 +79,7 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
         }
         return t;
       });
+
       return mTasks;
     });
   };
