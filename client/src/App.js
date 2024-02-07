@@ -7,11 +7,12 @@ import CreateTask from "./components/create-task/create-task";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tasks"))
+      ? JSON.parse(localStorage.getItem("tasks"))
+      : []
+  );
 
-  useEffect(() => {
-    setTasks(JSON.parse(localStorage.getItem("tasks")));
-  });
   return (
     <div className="App">
       <Toaster />

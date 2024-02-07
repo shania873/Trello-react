@@ -8,18 +8,17 @@ const CreateTask = ({ tasks, setTasks }) => {
     status: "todo",
   });
 
-  console.log(task);
-
   const handleSubmit = (e) => {
-    e.prevenDefault();
+    e.preventDefault();
     if (task.name.length < 3) return toast.error("Tu dois mettre un task !");
 
     setTasks((prev) => {
-      const list = [...prev, task];
-      console.log(list);
-      //   localStorage.setItem("tasks", JSON.stringify(list));
+      console.log(prev);
+      const list = prev ? [...prev, task] : [task];
 
-      //   return list;
+      localStorage.setItem("tasks", JSON.stringify(list));
+
+      return list;
     });
 
     toast.success("Task Created");
@@ -39,7 +38,7 @@ const CreateTask = ({ tasks, setTasks }) => {
           setTask({ ...task, id: uuidv4(), name: e.target.value })
         }
       />
-      <button>Create</button>
+      <button type="submit">Create</button>
     </form>
   );
 };

@@ -69,7 +69,6 @@ const DashboardItemColumn = ({ title, greedy, tasks }) => {
             draggable
             onDragOver={(event) => event.preventDefault()}
           >
-            {console.log(index)}
             {task.text}
           </div>
         ))}
