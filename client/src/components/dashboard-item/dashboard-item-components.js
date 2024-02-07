@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useDrop } from "react-dnd";
+import { useDrop, useDrag } from "react-dnd";
+
 import Card from "react-bootstrap/Card";
-import DashboardItemTask from "../dashboard-item-task/dashboard-item-task";
 import { ItemTypes } from "../../ItemTypes";
 function getStyle(backgroundColor) {
   return {
@@ -18,10 +18,21 @@ function getStyle(backgroundColor) {
     fontSize: "1rem",
   };
 }
-
-const DashboardItemColumn = ({ title, greedy, children }) => {
+const style = {
+  display: "inline-block",
+  border: "1px dashed gray",
+  padding: "0.5rem 1rem",
+  backgroundColor: "white",
+  color: "black",
+  cursor: "move",
+};
+const DashboardItemColumn = ({ title, greedy, tasks }) => {
   const [hasDropped, setHasDropped] = useState(false);
   const [hasDroppedOnChild, setHasDroppedOnChild] = useState(false);
+  const text = greedy ? "greedy" : "not greedy";
+  let backgroundColor = "rgba(0, 0, 0, .5)";
+  const [, drag] = useDrag(() => ({ type: ItemTypes.BOX }));
+
   const [{ isOver, isOverCurrent }, drop] = useDrop(
     () => ({
       accept: ItemTypes.BOX,
@@ -40,17 +51,29 @@ const DashboardItemColumn = ({ title, greedy, children }) => {
     }),
     [greedy, setHasDropped, setHasDroppedOnChild]
   );
-  const text = greedy ? "greedy" : "not greedy";
-  let backgroundColor = "rgba(0, 0, 0, .5)";
+
   if (isOverCurrent || (isOver && greedy)) {
     backgroundColor = "darkgreen";
   }
 
-  console.log(hasDropped);
   return (
     <div className="column" ref={drop} style={getStyle(backgroundColor)}>
       <h2>{title}</h2>
-      <DashboardItemTask></DashboardItemTask>
+      <div className="task-list">
+        {tasks.map((task, index) => (
+          <div
+            className="item-task"
+            ref={drag}
+            style={style}
+            key={index}
+            draggable
+            onDragOver={(event) => event.preventDefault()}
+          >
+            {console.log(index)}
+            {task.text}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
