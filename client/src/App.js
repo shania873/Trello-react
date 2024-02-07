@@ -15,8 +15,8 @@ const App = () => {
 
   return (
     <div className="App">
-      <Toaster />
       <DndProvider backend={HTML5Backend}>
+        <Toaster />
         <CreateTask tasks={tasks} setTasks={setTasks}></CreateTask>
         <DashboardContainer tasks={tasks} setTasks={setTasks} />
       </DndProvider>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DashboardItemComponents from "../dashboard-item/dashboard-item-components";
+import { useDrag, useDrop } from "react-dnd";
+import { ItemTypes } from "../../ItemTypes";
 
 const DashboardContainer = ({ tasks, setTasks }) => {
   const [inProgress, setInProgress] = useState([]);
@@ -32,22 +34,6 @@ const DashboardContainer = ({ tasks, setTasks }) => {
           />
         ))}
       </div>
-
-      {/* <DashboardItemComponents
-        title={"TODO"}
-        greedy={true}
-        tasks={tasks.filter((task) => task.status === "todo")}
-      />
-      <DashboardItemComponents
-        title={"DOING"}
-        greedy={true}
-        tasks={tasks.filter((task) => task.status === "doing")}
-      />
-      <DashboardItemComponents
-        title={"DONE"}
-        greedy={true}
-        tasks={tasks.filter((task) => task.status === "done")}gv '
-      /> */}
     </div>
   );
 };
@@ -55,6 +41,18 @@ const DashboardContainer = ({ tasks, setTasks }) => {
 export default DashboardContainer;
 
 const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    accept: "task",
+    type: "section",
+    drop(item) {
+      addItemToSection(item.id);
+    },
+    // drop: (item) => addItemToSection(item.id),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
+
   let text = "Todo";
   let bg = "bg-dark";
   let tasksToMap = todos;
@@ -71,8 +69,12 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
     tasksToMap = closed;
   }
 
+  const addItemToSection = (id) => {
+    console.log("test");
+    console.log("droped", id, status);
+  };
   return (
-    <div>
+    <div ref={drop}>
       <Header text={text} bg={bg} count={todos?.length} />
       {tasksToMap &&
         tasksToMap.length > 0 &&
@@ -84,8 +86,16 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
 };
 
 const Task = ({ task, tasks, setTasks }) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "task",
+
+    item: { id: task.id },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
   return (
-    <div>
+    <div ref={drag} className={`${isDragging ? "bg-dark" : "bg-white"}`}>
       <p>{task.name}</p>
     </div>
   );
