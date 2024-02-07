@@ -23,6 +23,29 @@ const CreateTask = ({ tasks, setTasks }) => {
       return list;
     });
 
+    fetch("http://localhost:3000/setTasks", {
+      method: "POST",
+      //   id, name, status
+      body: JSON.stringify({
+        id: task.id,
+        name: task.name,
+        status: task.status,
+      }),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // Handle the response data here
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        // Handle any errors here
+      });
+
     toast.success("Task Created");
 
     setTask({

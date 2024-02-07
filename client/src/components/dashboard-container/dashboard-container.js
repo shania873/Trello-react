@@ -43,7 +43,8 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: "task",
     type: "section",
-    drop(item) {
+    drop(item, prev) {
+      console.log(item, prev);
       addItemToSection(item.id);
     },
     collect: (monitor) => ({
@@ -68,30 +69,39 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
   }
 
   const addItemToSection = (id) => {
+    let statusChanged = false;
     setTasks((prev) => {
-      console.log("prev", prev);
-      const mTasks = prev.map((t) => {
-        console.log(t);
-        if (t.id === id) {
-          return { ...t, status: status };
+      const mTasks = prev.map((task) => {
+        if (task.status === "todo" && status === "closed") {
+          return task;
         }
-        return t;
+        if (task.id === id) {
+          toast("Status à changé");
+          return { ...task, status: status };
+        }
+        return task;
       });
 
       localStorage.setItem("tasks", JSON.stringify(mTasks));
-
-      toast("Status à changé");
 
       return mTasks;
     });
   };
   return (
-    <div ref={drop} className={`${isOver ? "bg-primary" : "bg-dark"}`}>
+    <div
+      ref={drop}
+      className={`${status} ${isOver ? "bg-primary" : "bg-dark"}`}
+    >
       <Header text={text} bg={bg} count={todos?.length} />
       {tasksToMap &&
         tasksToMap.length > 0 &&
         tasksToMap.map((task) => (
-          <Task key={task.id} task={task} setTasks={setTasks} />
+          <Task
+            key={task.id}
+            task={task}
+            setTasks={setTasks}
+            className={"tkorpektopre"}
+          />
         ))}
     </div>
   );
@@ -118,7 +128,7 @@ const Task = ({ task, tasks, setTasks }) => {
 
 const Header = ({ text, bg, count }) => {
   return (
-    <div className=" d-flex header-dashboard">
+    <div className="d-flex header-dashboard">
       <h6>
         {text}
         {/* <div>{count}</div> */}
