@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useDrag, useDrop } from "react-dnd";
-import Col from "react-bootstrap/Col";
+import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import toast from "react-hot-toast";
+
+import { useDrop } from "react-dnd";
 import Header from "../header-column/header-column";
 import Task from "../task-item/itemTask";
-const Column = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
+import { connect } from "react-redux";
+import { updateTask, fetchTasks } from "../../store/actions/tasksAction";
+const Column = (props) => {
+  const { updateTask, fetchTasks } = props;
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: "task",
     type: "section",
@@ -19,25 +23,25 @@ const Column = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
 
   let text = "Todo";
   let bg = "bg-dark";
-  let tasksToMap = todos;
+  let tasksToMap = props.todos;
 
-  if (status === "inprogress") {
+  if (props.status === "inprogress") {
     text = "In Progress";
     bg = "bg-white";
-    tasksToMap = inProgress;
+    tasksToMap = props.inProgress;
   }
 
-  if (status === "closed") {
+  if (props.status === "closed") {
     text = "Closed";
     bg = "bg-red";
-    tasksToMap = closed;
+    tasksToMap = props.closed;
   }
 
   const addItemToSection = (id) => {
     let statusChanged = false;
-    setTasks((prev) => {
+    props.setTasks((prev) => {
       const mTasks = prev.map((task) => {
-        if (task.status === "todo" && status === "closed") {
+        if (task.status === "todo" && props.status === "closed") {
           return task;
         }
         if (task.id === id) {
@@ -48,7 +52,7 @@ const Column = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
             body: JSON.stringify({
               id: id,
               name: task.name,
-              status: status,
+              status: props.status,
             }),
             credentials: "include",
             headers: {
@@ -63,7 +67,7 @@ const Column = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
               console.error("Error:", error);
             });
 
-          return { ...task, status: status };
+          return { ...task, status: props.status };
         }
         return task;
       });
@@ -76,16 +80,16 @@ const Column = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
   return (
     <div
       ref={drop}
-      className={`${status} ${isOver ? "bg-primary" : "bg-dark"}`}
+      className={`${props.status} ${isOver ? "bg-primary" : "bg-dark"}`}
     >
-      <Header text={text} bg={bg} count={todos?.length} />
+      <Header text={text} bg={bg} count={props.todos?.length} />
       {tasksToMap &&
         tasksToMap.length > 0 &&
         tasksToMap.map((task) => (
           <Task
             key={task.id}
             task={task}
-            setTasks={setTasks}
+            setTasks={props.setTasks}
             className={"tkorpektopre"}
           />
         ))}
@@ -93,4 +97,10 @@ const Column = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
   );
 };
 
-export default Column;
+const mapStateToProps = (state) => ({
+  tasks: state.tasksReducer.tasks,
+  isLoading: state.tasksReducer.isLoading,
+  error: state.tasksReducer.error,
+});
+
+export default connect(mapStateToProps, { updateTask, fetchTasks })(Column);
