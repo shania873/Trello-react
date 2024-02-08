@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { addTask, fetchTasks } from "../../store/actions/tasksAction";
 
 const CreateTask = (props) => {
-  const { addTask, fetchTasks } = props;
+  const { addTask } = props;
   const [task, setTask] = useState({
     id: "",
     name: "",

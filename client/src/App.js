@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { fetchTasks } from "./store/actions/tasksAction";
 
 const App = (props) => {
-  const { fetchTasks, isLoading, error } = props;
+  const { fetchTasks } = props;
   const [tasks, setTasks] = useState(
     JSON.parse(localStorage.getItem("tasks"))
       ? JSON.parse(localStorage.getItem("tasks"))

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useDrag, useDrop } from "react-dnd";
+import React from "react";
+import { useDrag } from "react-dnd";
 import Col from "react-bootstrap/Col";
-import toast from "react-hot-toast";
 
 const Task = ({ task, tasks, setTasks }) => {
   const [{ isDragging }, drag] = useDrag(() => ({

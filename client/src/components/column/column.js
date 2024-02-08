@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { updateTask, fetchTasks } from "../../store/actions/tasksAction";
 
 const Column = (props) => {
-  const { updateTask, fetchTasks, tasks } = props;
+  const { updateTask } = props;
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
     type: "section",
@@ -37,8 +37,6 @@ const Column = (props) => {
   }
 
   const addItemToSection = async (id) => {
-    let statusChanged = false;
-
     props.setTasks((prev) => {
       const mTasks = prev.map((task) => {
         if (task.status === "todo" && props.status === "closed") {
