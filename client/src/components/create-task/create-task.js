@@ -14,10 +14,18 @@ const CreateTask = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (task.name.length < 3) return toast.error("Tu dois mettre un task !");
 
-    await addTask(task);
-    fetchTasks();
+    props.setTasks((prev) => {
+      const list = prev ? [...prev, task] : [task];
+
+      localStorage.setItem("tasks", JSON.stringify(list));
+
+      return list;
+    });
+
+    addTask(task);
     toast.success("Task Created");
 
     setTask({

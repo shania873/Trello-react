@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import toast from "react-hot-toast";
 
@@ -7,13 +7,13 @@ import Header from "../header-column/header-column";
 import Task from "../task-item/itemTask";
 import { connect } from "react-redux";
 import { updateTask, fetchTasks } from "../../store/actions/tasksAction";
+
 const Column = (props) => {
-  const { updateTask, fetchTasks } = props;
-  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+  const { updateTask, fetchTasks, tasks } = props;
+  const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
     type: "section",
     drop(item, prev) {
-      console.log(item, prev);
       addItemToSection(item.id);
     },
     collect: (monitor) => ({
@@ -37,8 +37,9 @@ const Column = (props) => {
     tasksToMap = props.closed;
   }
 
-  const addItemToSection = (id) => {
+  const addItemToSection = async (id) => {
     let statusChanged = false;
+
     props.setTasks((prev) => {
       const mTasks = prev.map((task) => {
         if (task.status === "todo" && props.status === "closed") {
@@ -46,26 +47,7 @@ const Column = (props) => {
         }
         if (task.id === id) {
           toast("Status à changé");
-
-          fetch("http://localhost:3000/updateTasks", {
-            method: "POST",
-            body: JSON.stringify({
-              id: id,
-              name: task.name,
-              status: props.status,
-            }),
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
+          updateTask(id, task.name, props.status);
 
           return { ...task, status: props.status };
         }
@@ -77,6 +59,7 @@ const Column = (props) => {
       return mTasks;
     });
   };
+
   return (
     <div
       ref={drop}

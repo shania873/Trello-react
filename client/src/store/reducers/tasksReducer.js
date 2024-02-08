@@ -23,7 +23,7 @@ const tasksReducer = (state = initialState, action) => {
     case "UPDATE_TASKS":
       return {
         ...state,
-        tasks: [],
+        tasks: action.payload,
         isLoading: false,
         error: action.payload,
       };
