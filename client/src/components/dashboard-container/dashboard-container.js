@@ -77,6 +77,26 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
         }
         if (task.id === id) {
           toast("Status à changé");
+          fetch("http://localhost:3000/updateTasks", {
+            method: "POST",
+            body: JSON.stringify({
+              id: id,
+              name: task.name,
+              status: status,
+            }),
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+
           return { ...task, status: status };
         }
         return task;

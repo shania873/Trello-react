@@ -5,44 +5,38 @@ let Tasks = require("../models/tasks");
 exports.setTasks = async (req, res) => {
   try {
     const { id, name, status } = req.body;
-    // console.log(id, name, status, data);
-    // const sql = "INSERT INTO tasks (id, name, status) VALUES ?";
-    // const values = { id, name, status };
 
-    // connection.query(sql, [values], (error, results, fields) => {
-    //   if (error) {
-    //     console.error("Erreur lors de l'INSERT :", error.message);
-    //     throw error;
-    //   }
-
-    //   console.log("Nouveaux enregistrements insérés avec succès");
-    // });
-
-    Tasks.addProduct(id, name, status);
+    const newTask = await Tasks.addTasks(id, name, status);
+    console.log("Tâche ajoutée avec succès :", newTask);
   } catch (error) {
-    console.error("Erreur lors de la connexion :", error);
-    // res.status(500).json({ error: "Erreur lors de la connexion" });
+    console.error("Erreur lors de l'ajout de la tâche :", error);
   }
 };
 
 exports.updateTasks = async (req, res) => {
   try {
     const { id, name, status } = req.body;
-    data.forEach((item) => {
-      const sql = "UPDATE tasks SET status = ? WHERE id = ?";
-      const values = [status, id];
+    const taskId = id;
+    const updatedData = {
+      name: name,
+      status: status,
+    };
 
-      connection.query(sql, values, (error, results, fields) => {
-        if (error) {
-          console.error("Erreur lors de l'UPDATE :", error.message);
-          throw error;
-        }
-
-        console.log(`Tâche avec l'ID ${id} mise à jour avec succès`);
-      });
-    });
+    const tacheModifiee = await Tasks.updateTasks(taskId, updatedData);
+    console.log("Tâche mise à jour avec succès :", tacheModifiee);
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
+    res.status(500).json({ error: "Erreur lors de la connexion" });
+  }
+};
+
+exports.getTasks = async (req, res) => {
+  try {
+    const allTasks = await Tasks.getTasks();
+    console.log("Toutes les tâches :", allTasks);
+    res.status(200).json(allTasks);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des tâches :", error);
     res.status(500).json({ error: "Erreur lors de la connexion" });
   }
 };

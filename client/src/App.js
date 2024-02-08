@@ -13,6 +13,23 @@ const App = () => {
       : []
   );
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/getTasks"); // Remplacez l'URL par celle de votre serveur Node.js
+        if (!response.ok) {
+          throw new Error("La requête n'a pas abouti.");
+        }
+        const data = await response.json();
+        setTasks(data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des tâches :", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
       <DndProvider backend={HTML5Backend}>
