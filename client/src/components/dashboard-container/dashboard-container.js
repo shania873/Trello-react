@@ -77,6 +77,8 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
         }
         if (task.id === id) {
           toast("Status à changé");
+          // updateTask(id, task.name, status);
+
           fetch("http://localhost:3000/updateTasks", {
             method: "POST",
             body: JSON.stringify({
