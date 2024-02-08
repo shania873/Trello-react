@@ -2,7 +2,7 @@ import React from "react";
 import { useDrag } from "react-dnd";
 import Col from "react-bootstrap/Col";
 
-const Task = ({ task, tasks, setTasks }) => {
+const Task = ({ task }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "task",
 

@@ -39,7 +39,10 @@ const Column = (props) => {
   const addItemToSection = async (id) => {
     props.setTasks((prev) => {
       const mTasks = prev.map((task) => {
-        if (task.status === "todo" && props.status === "closed") {
+        if (
+          (task.status === "todo" && props.status === "closed") ||
+          (task.status === "closed" && props.status === "todo")
+        ) {
           return task;
         }
         if (task.id === id) {
