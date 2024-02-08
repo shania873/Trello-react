@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDrag, useDrop } from "react-dnd";
-import Col from "react-bootstrap/Col";
-import toast from "react-hot-toast";
 import Column from "../column/column";
 const DashboardContainer = ({ tasks, setTasks }) => {
   const [inProgress, setInProgress] = useState([]);

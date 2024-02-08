@@ -16,6 +16,7 @@ const Task = ({ task, tasks, setTasks }) => {
     <Col
       ref={drag}
       className={`column ${isDragging ? "bg-primary" : "bg-dark"}`}
+      data-testid="task-element"
     >
       <p>{task.name}</p>
     </Col>

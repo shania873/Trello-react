@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import toast from "react-hot-toast";
+import React from "react";
+import { toast } from "react-hot-toast";
 
 import { useDrop } from "react-dnd";
 import Header from "../header-column/header-column";
@@ -63,7 +62,8 @@ const Column = (props) => {
   return (
     <div
       ref={drop}
-      className={`${props.status} ${isOver ? "bg-primary" : "bg-dark"}`}
+      data-testid="column-container"
+      className={`column ${props.status} ${isOver ? "bg-primary" : "bg-dark"}`}
     >
       <Header text={text} bg={bg} count={props.todos?.length} />
       {tasksToMap &&
@@ -71,9 +71,10 @@ const Column = (props) => {
         tasksToMap.map((task) => (
           <Task
             key={task.id}
+            data-testid="task-element"
             task={task}
             setTasks={props.setTasks}
-            className={"tkorpektopre"}
+            className={"task"}
           />
         ))}
     </div>
