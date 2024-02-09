@@ -48,7 +48,8 @@ exports.deleteTask = async (req, res) => {
     const deletedTask = await Tasks.deleteTaskById(taskIdToDelete);
 
     if (deletedTask === 1) {
-      res.status(200).json({ message: "Tâche supprimée avec succès." });
+      const allTasks = await Tasks.getTasks();
+      res.status(200).json({ list: allTasks });
     } else {
       res.status(404).json({ message: "Tâche non trouvée." });
     }

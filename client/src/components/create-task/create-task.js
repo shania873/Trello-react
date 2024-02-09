@@ -26,7 +26,7 @@ const CreateTask = (props) => {
     });
 
     addTask(task);
-    toast.success("Task Created");
+    toast.success("Tache crée");
 
     setTask({
       id: "",

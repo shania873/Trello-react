@@ -46,7 +46,7 @@ const Column = (props) => {
           return task;
         }
         if (task.id === id) {
-          toast("Status à changé");
+          toast.success("Status à changé");
           updateTask(id, task.name, props.status);
 
           return { ...task, status: props.status };

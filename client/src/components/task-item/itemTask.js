@@ -13,15 +13,10 @@ const Task = (props) => {
     }),
   }));
 
-  function onClickDelete(task) {
-    // const updatedTasks = props.tasks.filter((t) => t.id !== task.id);
-    // props.setTasks(updatedTasks);
-    // toast("Task effacé");
-    // localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-
-    fetch(`http://localhost:3000/deleteTask/${task.id}`, {
+  async function onClickDelete(task) {
+    console.log(props.tasks.filter((e) => e.id !== task.id));
+    await fetch(`http://localhost:3000/deleteTask/${task.id}`, {
       method: "DELETE",
-
       headers: {
         "Content-Type": "application/json",
       },
@@ -33,10 +28,13 @@ const Task = (props) => {
         return response.json();
       })
       .then((data) => {
-        // props.setTasks(data);
-        console.log(data);
+        props.setTasks(data.list);
+        localStorage.setItem("tasks", JSON.stringify(data.list));
+        toast.success("Tache effacée");
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   }
   return (
     <Col
