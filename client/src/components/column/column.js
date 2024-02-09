@@ -38,7 +38,7 @@ const Column = (props) => {
 
   const addItemToSection = async (id) => {
     props.setTasks((prev) => {
-      const mTasks = prev.map((task) => {
+      const updatedTasksList = prev.map((task) => {
         if (
           (task.status === "todo" && props.status === "closed") ||
           (task.status === "closed" && props.status === "todo")
@@ -54,9 +54,9 @@ const Column = (props) => {
         return task;
       });
 
-      localStorage.setItem("tasks", JSON.stringify(mTasks));
+      localStorage.setItem("tasks", JSON.stringify(updatedTasksList));
 
-      return mTasks;
+      return updatedTasksList;
     });
   };
 

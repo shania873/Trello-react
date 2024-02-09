@@ -7,9 +7,9 @@ exports.setTasks = async (req, res) => {
     const { id, name, status } = req.body;
 
     const newTask = await Tasks.addTasks(id, name, status);
-    console.log("Tâche ajoutée avec succès :", newTask);
+    console.log("tache ajouté", newTask);
   } catch (error) {
-    console.error("Erreur lors de l'ajout de la tâche :", error);
+    res.status(500).json({ error: "Erreur lors de l'ajout de la tâche" });
   }
 };
 
@@ -22,10 +22,9 @@ exports.updateTasks = async (req, res) => {
       status: status,
     };
 
-    const tacheModifiee = await Tasks.updateTasks(taskId, updatedData);
-    console.log("Tâche mise à jour avec succès :", tacheModifiee);
+    const tacheUpdated = await Tasks.updateTasks(taskId, updatedData);
+    console.log("tache updatée", tacheUpdated);
   } catch (error) {
-    console.error("Erreur lors de la connexion :", error);
     res.status(500).json({ error: "Erreur lors de la connexion" });
   }
 };
@@ -33,10 +32,8 @@ exports.updateTasks = async (req, res) => {
 exports.getTasks = async (req, res) => {
   try {
     const allTasks = await Tasks.getTasks();
-    console.log("Toutes les tâches :", allTasks);
     res.status(200).json(allTasks);
   } catch (error) {
-    console.error("Erreur lors de la récupération des tâches :", error);
     res.status(500).json({ error: "Erreur lors de la connexion" });
   }
 };
