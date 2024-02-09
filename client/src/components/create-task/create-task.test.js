@@ -13,7 +13,7 @@ jest.mock("react-redux", () => ({
   connect: () => (component) => component,
 }));
 
-describe("CreateTask Component", () => {
+describe("Component Creation Task Showed", () => {
   it("renders without crashing", () => {
     render(<CreateTask />);
     const form = document.querySelectorAll(".form")[0];
@@ -21,7 +21,7 @@ describe("CreateTask Component", () => {
     expect(form).toBeInTheDocument();
   });
 
-  it("updates state on input change", () => {
+  it("add a new task", () => {
     render(<CreateTask />);
     const input = screen.getByRole("textbox");
 

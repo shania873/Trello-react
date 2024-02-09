@@ -21,7 +21,7 @@ describe("Column Component", () => {
     });
   });
 
-  it("handles drop event correctly", async () => {
+  it("drop tasks correctly", async () => {
     const mockUpdateTask = jest.fn();
     const mockFetchTasks = jest.fn();
 
