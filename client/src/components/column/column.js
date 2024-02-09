@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { updateTask, fetchTasks } from "../../store/actions/tasksAction";
 
 const Column = (props) => {
-  const { updateTask } = props;
+  const { updateTask, tasks } = props;
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
     type: "section",
@@ -74,6 +74,8 @@ const Column = (props) => {
             key={task.id}
             data-testid="task-element"
             task={task}
+            tasksToMap={tasksToMap}
+            tasks={tasks}
             setTasks={props.setTasks}
             className={"task"}
           />

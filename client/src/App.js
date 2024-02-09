@@ -25,6 +25,7 @@ const App = (props) => {
         }
         const data = await response.json();
         setTasks(data);
+        fetchTasks();
       } catch (error) {
         console.error("Erreur lors de la récupération des tâches :", error);
       }

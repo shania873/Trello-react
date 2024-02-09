@@ -72,4 +72,19 @@ Tasks.getTasks = async function () {
   }
 };
 
+Tasks.deleteTaskById = async function (taskId) {
+  try {
+    const deletedTask = await Tasks.destroy({
+      where: {
+        id: taskId,
+      },
+    });
+    return deletedTask;
+  } catch (error) {
+    throw new Error(
+      `Erreur lors de la suppression de la tâche : ${error.message}`
+    );
+  }
+};
+
 module.exports = Tasks;

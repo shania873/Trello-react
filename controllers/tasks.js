@@ -40,3 +40,21 @@ exports.getTasks = async (req, res) => {
     res.status(500).json({ error: "Erreur lors de la connexion" });
   }
 };
+
+exports.deleteTask = async (req, res) => {
+  const taskIdToDelete = req.params.taskId;
+
+  try {
+    const deletedTask = await Tasks.deleteTaskById(taskIdToDelete);
+
+    if (deletedTask === 1) {
+      res.status(200).json({ message: "Tâche supprimée avec succès." });
+    } else {
+      res.status(404).json({ message: "Tâche non trouvée." });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: `Erreur lors de la suppression de la tâche : ${error.message}`,
+    });
+  }
+};
